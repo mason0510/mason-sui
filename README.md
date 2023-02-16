@@ -1,6 +1,6 @@
-# sui 前端开发脚手架
+# sui 开发
 
-一个 基于 next.js Tailwind 的 sui move 应用脚手架。
+一个 基于 next.js 的 sui as 稳定币项目
 
 ## 启动运行
 
@@ -15,5 +15,3 @@
 4. yarn dev
 5. yarn build #编译完成的 next.js 应用
 6. 合约代码在 move_package 中
-
-本项目由 [NonceGeek DAO](https://noncegeek.com/#/) 维护。
