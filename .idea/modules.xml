@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/scaffold-sui.iml" filepath="$PROJECT_DIR$/.idea/scaffold-sui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sui-as.iml" filepath="$PROJECT_DIR$/.idea/sui-as.iml" />
     </modules>
   </component>
 </project>
