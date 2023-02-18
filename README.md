@@ -52,7 +52,7 @@ cargo install --locked --git https://github.com/MystenLabs/sui.git --branch devn
 导入助记词
 sui  keytool import "borrow year auto supreme tornado shoe tiger trial bacon craft fiction capable" ed25519
 
-sui  keytool import "benefit artefact action frame void picnic hospital february risk eternal point crumble" ed25519
+sui  keytool import "" ed25519
 利息计算:
 
 cycle * rate 
