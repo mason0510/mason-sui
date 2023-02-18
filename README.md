@@ -122,3 +122,8 @@ sui move test sword 测试指定unit tests
 
 
 debug::print(v);
+
+PORT=9081 npx next start
+
+内网部署
+http://23.254.167.135:6001/
