@@ -8,6 +8,27 @@ module citi_coin::CITI{
     /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.
     struct CITI has drop {}
 
+    /// A restricted transfer of Abc to another account.
+    struct Transfer has key {
+        id: UID,
+        balance: Balance<CITI>,
+        to: address,
+    }
+
+
+    /// A registry of addresses banned from using the coin.
+    struct Registry has key {
+        id: UID,
+        banned: vector<address>,
+        swapped_amount: u64,
+    }
+
+    /// A CitiTreasuryCap for the balance::Supply.
+    struct CitiTreasuryCap has key, store {
+        id: UID,
+        supply: Supply<CITI>
+    }
+
     /// Register the CITIcurrency to acquire its `TreasuryCap`. Because
     /// this is a module initializer, it ensures the currency only gets
     /// registered once.
