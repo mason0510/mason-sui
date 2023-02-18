@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { JsonRpcProvider } from '@mysten/sui.js';
 import { SUI_PACKAGE, SUI_MODULE } from "../config/constants";
 
-const BaseAddr = "0x2";
+const BaseAddr = SUI_PACKAGE;
 type NftListPros = { nfts: Array<{ url: string, id: string, name: string, description: string }> };
 //this part is lists for nfts and swords
 const NftList = ({ nfts }: NftListPros) => {
@@ -73,13 +73,13 @@ export default function Home() {
   const provider = new JsonRpcProvider();
   const { account, connected, signAndExecuteTransaction } = useWallet();
   const [formInput, updateFormInput] = useState<{
-    name: string;
-    url: string;
-    description: string;
+    objectId: string;
+    amount: string;
+    address: string;
   }>({
-    name: "",
-    url: "",
-    description: "",
+    objectId: "",
+    amount: "",
+    address: "",
   });
   const [message, setMessage] = useState('');
   const [tx, setTx] = useState('');
@@ -90,10 +90,10 @@ export default function Home() {
   const [recipient, updateRecipient] = useState("");
   const [transfer_id, setTransferId] = useState("");
 
-  async function buy_citi() {
+  async function mint_citi() {
     setMessage("");
     try {
-      const data = create_example_nft()
+      const data = create_mint_citi()
       const resData = await signAndExecuteTransaction({
         transaction: {
           kind: 'moveCall',
@@ -110,17 +110,72 @@ export default function Home() {
     }
   }
 
-  function create_example_nft() {
-    const { name, url, description } = formInput;
+  // async function buy_citi() {
+  //   setMessage("");
+  //   try {
+  //     const data = create_example_nft()
+  //     const resData = await signAndExecuteTransaction({
+  //       transaction: {
+  //         kind: 'moveCall',
+  //         data,
+  //       },
+  //     });
+  //     console.log('success', resData);
+  //     setMessage('Buy succeeded');
+  //     setTx('https://explorer.sui.io/transaction/' + resData.certificate.transactionDigest)
+  //   } catch (e) {
+  //     console.error('failed', e);
+  //     setMessage('Mint failed: ' + e);
+  //     setTx('');
+  //   }
+  // }
+
+  // function create_example_nft() {
+  //   const { name, url, description } = formInput;
+  //   return {
+  //     packageObjectId: BaseAddr,
+  //     module: 'devnet_nft',
+  //     function: 'mint',
+  //     typeArguments: [],
+  //     arguments: [
+  //       name,
+  //       description,
+  //       url,
+  //     ],
+  //     gasBudget: 30000,
+  //   };
+  // }
+
+  function create_mint_citi() {
+    const { amount, address,objectId } = formInput;
+    if (formInput.objectId == "" || formInput.address == "") {
+      //objectId 0x73bde317f791b81843c6fc9a1bfc0ed4d0b0188c
+      //amount 100
+      //receive 0x2df84ad1c9a65f809940b56645253953d253db5f
+      //Give them default value
+        return {
+            packageObjectId: BaseAddr,
+            module: 'CITI',
+            function: 'mint',
+            typeArguments: [],
+            arguments: [
+                "0xe9dbaa4321b38fa747a6f5ca5a15aac376fd2eb3",
+                "100",
+                "0x2df84ad1c9a65f809940b56645253953d253db5f"
+            ],
+            gasBudget: 30000,
+        }
+
+    }
     return {
       packageObjectId: BaseAddr,
-      module: 'devnet_nft',
+      module: 'CITI',
       function: 'mint',
       typeArguments: [],
       arguments: [
-        name,
-        description,
-        url,
+        objectId,
+        amount,
+        address,
       ],
       gasBudget: 30000,
     };
@@ -265,26 +320,55 @@ export default function Home() {
         <p><b>Index:?</b></p>
         <p><b>Protocol-Owned Liquidity?</b></p>
         <input
-          placeholder="输入到兑换的sui数量"
-          className="mt-4 p-4 input input-bordered input-primary w-full"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, name: e.target.value })
-          }
+            placeholder="输入到Mint的objectId 默认0xe9dbaa4321b38fa747a6f5ca5a15aac376fd2eb3"
+            className="mt-4 p-4 input input-bordered input-primary w-full"
+            onChange={(e) =>
+                updateFormInput({ ...formInput, objectId: e.target.value })
+            }
         />
         <input
-          placeholder="可得到的citi数量"
-          className="mt-8 p-4 input input-bordered input-primary w-full"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, description: e.target.value })
-          }
+            placeholder="输入到Mint的sui数量 默认 1000"
+            className="mt-4 p-4 input input-bordered input-primary w-full"
+            onChange={(e) =>
+                updateFormInput({ ...formInput, amount: e.target.value })
+            }
+        />
+        <input
+            placeholder="输入到Mint的接收地址 默认 0x2df84ad1c9a65f809940b56645253953d253db5f"
+            className="mt-8 p-4 input input-bordered input-primary w-full"
+            onChange={(e) =>
+                updateFormInput({ ...formInput, address: e.target.value })
+            }
         />
         <button
-          onClick={buy_citi}
-          className={
-            "btn btn-primary font-bold mt-4 text-white rounded p-4 shadow-lg"
-          }>
-          现在兑换
+            onClick={mint_citi}
+            className={
+              "btn btn-primary font-bold mt-4 text-white rounded p-4 shadow-lg"
+            }>
+          现在mint
         </button>
+
+        {/*<input*/}
+        {/*  placeholder="输入到兑换的sui数量"*/}
+        {/*  className="mt-4 p-4 input input-bordered input-primary w-full"*/}
+        {/*  onChange={(e) =>*/}
+        {/*    updateFormInput({ ...formInput, name: e.target.value })*/}
+        {/*  }*/}
+        {/*/>*/}
+        {/*<input*/}
+        {/*  placeholder="可得到的citi数量"*/}
+        {/*  className="mt-8 p-4 input input-bordered input-primary w-full"*/}
+        {/*  onChange={(e) =>*/}
+        {/*    updateFormInput({ ...formInput, description: e.target.value })*/}
+        {/*  }*/}
+        {/*/>*/}
+        {/*<button*/}
+        {/*  onClick={buy_citi}*/}
+        {/*  className={*/}
+        {/*    "btn btn-primary font-bold mt-4 text-white rounded p-4 shadow-lg"*/}
+        {/*  }>*/}
+        {/*  现在兑换*/}
+        {/*</button>*/}
         <p className="mt-4">{message}{message && <Link href={tx}>, View transaction</Link>}</p>
       </div>
 

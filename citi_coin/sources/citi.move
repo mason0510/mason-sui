@@ -5,17 +5,17 @@ module citi_coin::CITI{
     use sui::coin::{Self, Coin, TreasuryCap};
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
-    use sui::object::{Self, UID};
-    use sui::table;
-    use sui::object::UID as MyUID;
-    use sui::balance;
-    use sui::table::Table;
-    use sui::object;
+    const ENonZero: u64 = 0;
+    /// For when an overflow is happening on Supply operations.
+    const EOverflow: u64 = 1;
+    /// For when trying to withdraw more than there is.
+    const ENotEnough: u64 = 2;
 
-    // index: u64 = 0;
-    //define a index stuct
-    struct Index has key, store, drop {
-        index: u64
+    /// The maximum unsigned bits that the coin value should be
+    const MAX_COIN_BIT: u64 = 64;
+
+    struct Supply has store {
+        value: u64
     }
 
 
@@ -24,26 +24,13 @@ module citi_coin::CITI{
     struct CITI has drop {
     }
 
-    // define a struct
-    struct Stake has key, store, drop {
-        id: UID,
-        address:address,
-        mybalance: balance::Balance<CITI>,
 
-    }
-
-    struct MyTable has key, store {
-        id: UID,
-        children: Table<u64, Stake>,
-    }
     /// Register the CITIcurrency to acquire its `TreasuryCap`. Because
     /// this is a module initializer, it ensures the currency only gets
     /// registered once.
     fun init(witness: CITI, ctx: &mut TxContext) {
-        //9 位
-        // witness.total_value = 100000000000000000;
         // Get a treasury cap for the coin and give it to the transaction sender
-        let (treasury_cap, metadata) = coin::create_currency<CITI>(witness, 9, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx);
+        let (treasury_cap, metadata) = coin::create_currency<CITI>(witness, 1, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx);
         transfer::freeze_object(metadata);
         transfer::transfer(treasury_cap, tx_context::sender(ctx))
     }
@@ -61,11 +48,15 @@ module citi_coin::CITI{
         coin::burn(treasury_cap, coin);
     }
 
+    //for test
+    public fun supply_value<CITI>(): u64 {
+        100000000
+    }
+
     #[test]
     /// Wrapper of module initializer for testing
     public fun test_init(ctx: &mut TxContext) {
-        init(CITI{}, ctx)
-        //debug::print(v);
+        init(CITI{}, ctx);
     }
 
     #[test]
@@ -73,39 +64,11 @@ module citi_coin::CITI{
         // let (treasury_cap, metadata) = coin::create_currency<CITI>(CITI{}, 9, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx)
         let (treasury_cap, _) = coin::create_currency<CITI>(CITI{}, 9, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx);
         //consum the treasury_cap
-        // let  treasury_cap = &mut treasury_cap;
-        //drop the metadata
-        // //Incompatible type 'TreasuryCap<CITI>', expected '&mut TreasuryCap<CITI>'
-        // // let mut treasury_cap = treasury_cap;
-        // // define treasury_cap: &mut TreasuryCap<CITI>,
         let  treasury_cap = &mut treasury_cap;
-        mint(treasury_cap, 100, tx_context::sender(ctx), ctx)
-        //println!("result is {}",result);
+        mint(treasury_cap, 100, tx_context::sender(ctx), ctx);
+        std::debug::print(treasury_cap);
     }
 
-    // #[test]
-    // /// Wrapper of module initializer for testing
-    // public fun test_burn(ctx: &mut TxContext) {
-    //     init(CITI{}, ctx)
-    // }
-    //
-    // #[test_only]
-    // /// Wrapper of module initializer for testing
-    // public fun test_stake(ctx: &mut TxContext) {
-    //     init(CITI{}, ctx)
-    // }
-    //
-    // #[test_only]
-    // /// Wrapper of module initializer for testing
-    // public fun test_unstake(ctx: &mut TxContext) {
-    //     init(CITI{}, ctx)
-    // }
-    //
-    // #[test_only]
-    // /// Wrapper of module initializer for testing
-    // public fun test_claim(ctx: &mut TxContext) {
-    //     init(CITI{}, ctx)
-    // }
 
 }
 

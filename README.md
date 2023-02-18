@@ -28,18 +28,31 @@ sui client active-address
 //查看账户余额
 sui client objects
 
+切换开发环境
+sui client switch --env devnet
+
+切换地址
+sui client switch --address 0x2df84ad1c9a65f809940b56645253953d253db5f
+
+
 sui client publish  --gas-budget 3000 ./
 
 sui合约调用
 sui client call --address 0x1083871113de333758c3d46136030d573f09ae18 --module HelloWorld --function say_hello --args 0x1083871113de333758c3d46136030d573f09ae18
 sui client call --function transfer --module sui --package 0x2 --args 0x471c8e241d0473c34753461529b70f9c4ed3151b 0x3cbf06e9997b3864e3baad6bc0f0ef8ec423cd75 --gas-budget 1000
+call test
+sui client call --function mint --module CITI --package 0x7b771a749fad4a160308468ec716f37dd91cac90 --args 0x30259e7cbe09c1e9e6836400646473faa5c5f526 1000 0x2df84ad1c9a65f809940b56645253953d253db5f --gas-budget 1000
+sui client call --function mint --module CITI --package 0x73bde317f791b81843c6fc9a1bfc0ed4d0b0188c --args 0xe9dbaa4321b38fa747a6f5ca5a15aac376fd2eb3 1000 0x2df84ad1c9a65f809940b56645253953d253db5f --gas-budget 1000
 
+
+coin::TreasuryCap<0x7b771a749fad4a160308468ec716f37dd91cac90::CITI::CITI>
 sui版本升级
 cargo install --locked --git https://github.com/MystenLabs/sui.git --branch devnet sui
 
 导入助记词
 sui  keytool import "borrow year auto supreme tornado shoe tiger trial bacon craft fiction capable" ed25519
 
+sui  keytool import "benefit artefact action frame void picnic hospital february risk eternal point crumble" ed25519
 利息计算:
 
 cycle * rate 
