@@ -61,6 +61,93 @@ module citi_coin::CITI{
         coin::burn(treasury_cap, coin);
     }
 
+
+    //stake
+    //from current address to current contract address
+    public entry fun stake(treasury_cap: &mut TreasuryCap<CITI>,coin: &Coin<CITI> , ctx: &mut TxContext) {
+        //amount  address
+        // define  a Stake
+        // let stakePerson = Stake{myUid,myaddress,mybalance};
+
+        //get current address
+        let sender = tx_context::sender(ctx);
+        //get current object balance
+        let balance = coin::balance<CITI>(coin);
+        // set a struct
+
+        //transfer coin to current contract address
+        //burn coin
+        //&Coin<CITI> to Coin<CITI>
+        // let coin = *coin;
+        coin::burn(treasury_cap, *coin);
+        //record the stake amount
+        // let balance = *balance;
+        //Get current Index length
+        // let length=table::length(&child.children);
+        table::borrow(&mut Index.index, 0);
+        //old + amount as  new balance
+        //+1
+        // let index = length + 1;
+        let myUid=object::new(ctx);
+        record_stake(ctx,myUid,sender,balance);
+    }
+    /// record the stake amount and save into table
+    fun record_stake(ctx: &mut TxContext,myUid:UID, myaddress :address,mybalance : sui::coin::Balance<CITI>) {
+        //save the stake amount and stake sender address into table
+        //get current object id
+        //set index a UID
+        // let myindex = UID::new(index);
+        //from address to UID
+        // let myaddress = object::id_from_address(myaddress);
+        // let stakePerson = Stake{myUid,myaddress,mybalance};
+        // let stakePerson = Stake{myUid,myaddress::address,mybalance};
+        //define a new table
+        let stakePerson = Stake{ id:myUid, address:myaddress, mybalance:mybalance};
+        let mytable = MyTable{ id:myUid, children: Stake};
+        //get current Index length
+        //address to key
+        let myaddress = object::id_from_address(myaddress);
+        sui::table::add(  *mytable,myaddress, stakePerson);
+    }
+
+    //unstake
+    // mint coin to current address and then delete the record
+    public entry fun unstake(treasury_cap: &mut TreasuryCap<CITI>,child: &mut MyTable, index: u64, ctx: &mut TxContext) {
+        //get current address
+        let sender = tx_context::sender(ctx);
+        //get the stake index and balance
+        let Stake { id,address, mybalance} = table::remove(
+            &mut MyTable.children,
+            index
+        );
+        //delete the record
+        object::delete(id);
+        //transfer
+        coin::mint_and_transfer(treasury_cap, *mybalance, sender, ctx);
+    }
+
+    //claim citi coin as interest
+    //cycle * rate as interest by stake amount
+    //now set a rate 0.1 as 10% as a fixed value
+    //example: stake 1000 citi coin, 10% amount, interest 100 citi coin,and then mint 100 citi coin to current address
+    public entry fun claim(treasury_cap: &mut TreasuryCap<CITI>,child: &mut MyTable, index: u64, cycle: u64, ctx: &mut TxContext) {
+        //get current address
+        let sender = tx_context::sender(ctx);
+        //get the stake index and balance
+        //struct how  go get data  amount
+        let Stake { id,address, mybalance} = table::remove(
+            &mut MyTable.children,
+            index
+        );
+        //calculate the interest
+        let value=*mybalance;
+        // Take out mybalance
+        //amount 10%
+        let interest = value * 10 / 100;
+        coin::mint_and_transfer(treasury_cap, interest, sender, ctx);
+    }
+
+
     #[test]
     /// Wrapper of module initializer for testing
     public fun test_init(ctx: &mut TxContext) {

@@ -1,0 +1,12 @@
+2023-02-18T03:21:09.486560Z  INFO sui::client_commands: 0xef60b3166eb103857d662e190526c11fbf871383
+2023-02-18T03:23:15.692355Z  INFO sui::client_commands: Showing 6 results.
+2023-02-18T03:23:15.692890Z  INFO sui::client_commands: 0x5d6eaf384e572a178ce772c5e56499f92edd4f20
+2023-02-18T03:23:15.692898Z  INFO sui::client_commands: 0x729cd6e4819c1695c3b02e13badfe7eecd75c407
+2023-02-18T03:23:15.692900Z  INFO sui::client_commands: 0x828b8bf2d12bf1383e47e4e7d27df4546e428d60
+2023-02-18T03:23:15.692903Z  INFO sui::client_commands: 0xd1ca176075616660e2e2c3376c056c0ea1eba942
+2023-02-18T03:23:15.692906Z  INFO sui::client_commands: 0xef60b3166eb103857d662e190526c11fbf871383
+2023-02-18T03:23:15.692908Z  INFO sui::client_commands: 0xfccd94af459c7b48c8515153caa99a18ab73ccd3
+2023-02-18T03:24:03.109299Z  INFO sui::client_commands:                  Object ID                  |  Version   |                    Digest                    |   Owner Type    |               Object Type               
+2023-02-18T03:24:03.110049Z  INFO sui::client_commands: ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2023-02-18T03:24:03.110055Z  INFO sui::client_commands: Showing 0 results.
+2023-02-18T03:26:37.905340Z  INFO sui::client_commands: 0xef60b3166eb103857d662e190526c11fbf871383

@@ -7,6 +7,7 @@ import { SUI_PACKAGE, SUI_MODULE } from "../config/constants";
 
 const BaseAddr = "0x2";
 type NftListPros = { nfts: Array<{ url: string, id: string, name: string, description: string }> };
+//this part is lists for nfts and swords
 const NftList = ({ nfts }: NftListPros) => {
   return nfts && (
     <div className="card lg:card-side bg-base-100 shadow-xl mt-5">
@@ -63,8 +64,6 @@ const SwordList = ({ swords, transfer }: SwordListPros) => {
             </tbody>
           </table>
         </div>
-
-
       </div>
     </div>
   )
@@ -91,7 +90,7 @@ export default function Home() {
   const [recipient, updateRecipient] = useState("");
   const [transfer_id, setTransferId] = useState("");
 
-  async function mint_example_nft() {
+  async function buy_citi() {
     setMessage("");
     try {
       const data = create_example_nft()
@@ -254,39 +253,40 @@ export default function Home() {
         </div>
       </div>
       <div>
-        <p><b>Mint Example NFT</b></p>
+        <div style={{color:'red',fontSize: '25px'}}>代币信息介绍:</div>
+        <p><b>名称:citi</b></p>
+        <p><b>发行价格:1usdt=1citi</b></p>
+        <p><b>当前价格:?</b></p>
+        <p><b>代币总量:1亿</b></p>
+        <p><b>流通量:1000万</b></p>
+        <p><b>抵押率:10%</b></p>
+        <p><b>TVL:?</b></p>
+        <p><b>APY:1%/oneDay</b></p>
+        <p><b>Index:?</b></p>
+        <p><b>Protocol-Owned Liquidity?</b></p>
         <input
-          placeholder="NFT Name"
+          placeholder="输入到兑换的sui数量"
           className="mt-4 p-4 input input-bordered input-primary w-full"
           onChange={(e) =>
             updateFormInput({ ...formInput, name: e.target.value })
           }
         />
         <input
-          placeholder="NFT Description"
+          placeholder="可得到的citi数量"
           className="mt-8 p-4 input input-bordered input-primary w-full"
           onChange={(e) =>
             updateFormInput({ ...formInput, description: e.target.value })
           }
         />
-        <input
-          placeholder="NFT IMAGE URL"
-          className="mt-8 p-4 input input-bordered input-primary w-full"
-          onChange={(e) =>
-            updateFormInput({ ...formInput, url: e.target.value })
-          }
-        />
         <button
-          onClick={mint_example_nft}
+          onClick={buy_citi}
           className={
             "btn btn-primary font-bold mt-4 text-white rounded p-4 shadow-lg"
           }>
-          Mint example NFT
+          现在兑换
         </button>
         <p className="mt-4">{message}{message && <Link href={tx}>, View transaction</Link>}</p>
       </div>
-      <NftList nfts={nfts} />
-      <SwordList swords={swords} transfer={transferSword} />
 
 
     </div >
