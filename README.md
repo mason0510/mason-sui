@@ -18,6 +18,8 @@ yarn dev
 - 设置模块名
 
 2.部署合约
+新建项目
+sui move new data_structure
 新建地址
 sui client new-address ed25519
 sun rotate squeeze payment appear frog infant garlic toilet frog mixed answer mobile train trip canal click dash mirror repeat little harbor drink budget
@@ -34,6 +36,11 @@ sui client switch --env devnet
 切换地址
 sui client switch --address 0x2df84ad1c9a65f809940b56645253953d253db5f
 
+导出私钥
+
+将其放入文件1.txt cat ～/.sui/sui_config/sui.keystore
+加载私钥 keytool load-keypair 1.txt
+实际上work就是将私钥的64位base64编码的字符串放入文件中，然后加载私钥 解码就可以导入其他地方
 
 sui client publish  --gas-budget 3000 ./
 
@@ -127,3 +134,44 @@ PORT=9081 npx next start
 
 内网部署
 http://23.254.167.135:6001/
+
+
+数据结构测试
+# 编译并发布
+sui client publish . --gas-budget 300000
+
+# 获取上一步编译得到的包的 ID
+export package_id=0xee2961ee26916285ebef57c68caaa5f67a3d8dbd
+
+sui client call \
+  --function example \
+  --module vectors \
+  --package ${package_id} \
+  --gas-budget 30000
+
+sui client call \
+  --function example \
+  --module vectors \
+  --package 0x9526e619f7cdf6afe9c99a27a41756d51d766f0a \
+  --gas-budget 30000
+0x9526e619f7cdf6afe9c99a27a41756d51d766f0a
+
+
+
+//flash lender
+    public fun withdraw<T>(
+        admin_cap: &AdminCap,
+        amount: u64,
+        ctx: &mut TxContext
+    ): Coin<T> {
+        // only the holder of the `AdminCap` for `self` can withdraw funds
+        // check_admin(self, admin_cap);
+
+        // let to_lend = &mut self.to_lend;
+        // assert!(balance::value(to_lend) >= amount, EWithdrawTooLarge);
+        // coin::take(to_lend, amount, ctx)
+    }
+
+    fun check_admin<T>(self: &FlashLender<T>, admin_cap: &AdminCap) {
+        assert!(object::borrow_id(self) == &admin_cap.flash_lender_id, EAdminOnly);
+    }

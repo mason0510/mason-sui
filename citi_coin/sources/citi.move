@@ -53,6 +53,16 @@ module citi_coin::CITI{
         100000000
     }
 
+
+
+    //闪电贷
+    use sui::object::{Self, ID, UID};
+    struct AdminCap has key, store {
+        id: UID,
+        flash_lender_id: ID,
+    }
+
+
     #[test]
     /// Wrapper of module initializer for testing
     public fun test_init(ctx: &mut TxContext) {

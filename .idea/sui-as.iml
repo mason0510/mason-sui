@@ -43,6 +43,7 @@
       <excludeFolder url="file://$MODULE_DIR$/sui/sui_programmability/examples/old-frenemies/build" />
       <excludeFolder url="file://$MODULE_DIR$/sui/sui_programmability/examples/fungible_tokens/build" />
       <excludeFolder url="file://$MODULE_DIR$/sui/sui_programmability/examples/objects_tutorial/build" />
+      <excludeFolder url="file://$MODULE_DIR$/data_structure/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
