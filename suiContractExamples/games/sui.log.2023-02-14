@@ -1,0 +1,18 @@
+2023-02-14T02:58:30.016086Z  INFO sui::client_commands: [1m----- Certificate ----[0m
+2023-02-14T02:58:30.017046Z  INFO sui::client_commands: Transaction Hash: TransactionDigest(D2Kmb1gZUnvxbSqKvJyRGMiqR96myPztWJq7Ua4G5wx4)
+2023-02-14T02:58:30.017052Z  INFO sui::client_commands: Transaction Signature: AA==@KchRQL4IFk6aakKDuvTnhvgHoGOYTQsfns0Xm3jT1H1zPhDURhCBFHojyFTrpQQCl51IDd5TrjUJPDRRAlVoDg==@dSAkXzrTxCe18I3/rbmYQ/FCtexbw3MwnECr0xiQh6A=
+2023-02-14T02:58:30.017056Z  INFO sui::client_commands: Signed Authorities Bitmap: RoaringBitmap<[0, 2, 3]>
+2023-02-14T02:58:30.017059Z  INFO sui::client_commands: Transaction Kind : Publish
+2023-02-14T02:58:30.017062Z  INFO sui::client_commands: Sender: 0xef60b3166eb103857d662e190526c11fbf871383
+2023-02-14T02:58:30.017065Z  INFO sui::client_commands: Gas Payment: Object ID: 0xa93ec035bc5723e3a702828aa7f2950f5e497689, version: 0xb57, digest: o#FLnTQnoXBDwzhE0BlpZccpnpa3EYgIJsnLhg7WJ4Ixw=
+2023-02-14T02:58:30.017068Z  INFO sui::client_commands: Gas Price: 1
+2023-02-14T02:58:30.017071Z  INFO sui::client_commands: Gas Budget: 30000
+2023-02-14T02:58:30.017074Z  INFO sui::client_commands: [1m----- Transaction Effects ----[0m
+2023-02-14T02:58:30.017076Z  INFO sui::client_commands: Status : Success
+2023-02-14T02:58:30.017079Z  INFO sui::client_commands: Created Objects:
+2023-02-14T02:58:30.017082Z  INFO sui::client_commands:   - ID: 0x0f5f149a308dbb0dfb1b34400c40adc4232f89d0 , Owner: Account Address ( 0xef60b3166eb103857d662e190526c11fbf871383 )
+2023-02-14T02:58:30.017085Z  INFO sui::client_commands:   - ID: 0x3567e8a36be2da5048bfb75520d3b75eca54ef7a , Owner: Account Address ( 0xef60b3166eb103857d662e190526c11fbf871383 )
+2023-02-14T02:58:30.017088Z  INFO sui::client_commands:   - ID: 0x6bacab4529068f8da3cefb673b26590754ecf3af , Owner: Immutable
+2023-02-14T02:58:30.017091Z  INFO sui::client_commands:   - ID: 0xa5ddfa69353b2003c6e4a65aa8470aacc61be5e0 , Owner: Immutable
+2023-02-14T02:58:30.017131Z  INFO sui::client_commands: Mutated Objects:
+2023-02-14T02:58:30.017134Z  INFO sui::client_commands:   - ID: 0xa93ec035bc5723e3a702828aa7f2950f5e497689 , Owner: Account Address ( 0xef60b3166eb103857d662e190526c11fbf871383 )
