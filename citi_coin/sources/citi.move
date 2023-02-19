@@ -40,8 +40,13 @@ module citi_coin::CITI{
         let (treasury_cap, metadata) = coin::create_currency<CITI>(witness, 1, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx);
         transfer::freeze_object(metadata);
 
-        let epoch = tx_context::epoch(ctx);
-
+        transfer::share_object(
+            Stake {
+                id: object::new(ctx),
+                pool:tx_context::sender(ctx), //??
+                stakes: table::new(ctx),
+            }
+        );
 
         transfer::transfer(treasury_cap, tx_context::sender(ctx))
     }
@@ -60,20 +65,11 @@ module citi_coin::CITI{
     }
 
 
-    public(friend) fun stake(self: &Stake, sui: Coin<SUI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
-        // transfer sui to stake pool
-        //get value from struct
-        //before information get balance
-        // assert!(counter.owner == tx_context::sender(ctx), 0);
-        // counter.value = value;
-        //id_from_address
-        tx_context::sender(ctx);
-        Id::id_from_address(tx_context::sender(ctx));
-        // map address to id
+    public(friend) fun stake(self: &Stake, citi: Coin<CITI>, ctx: &mut TxContext) {
+        // transfer citi to stake pool
 
-        //citi coin
-        let amount = = coin::balance<SUI>(sui);
-        transfer::transfer(sui, self.pool);
+        let amount = = coin::balance<CITI>(citi);
+        transfer::transfer(citi, self.pool);
 
         let sender = tx_context::sender(ctx);
         if (!table::contains(&self.stakes, sender)) {
@@ -85,27 +81,34 @@ module citi_coin::CITI{
             ??
         };
 
-        //transfer citi to sender
-        coin::mint_and_transfer(treasury_cap, amount, sender, ctx)
-
     }
 
-    public(friend) fun unstake(self: &Stake,  citi: Coin<CITI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+    public(friend) fun unstake(self: &Stake, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
         //
-        let amount  = coin::balance<CITI>(citi);
         let sender = tx_context::sender(ctx);
         if (table::contains(&self.stakes, sender)) {
-            let stakedCount = table::borrow(&self.stakes, sender)
-            if(stakedCount >= amount ){
-                coin::burn(treasury_cap, citi);
-                transfer::transfer(sui, sender);
+            let oldCount = table::borrow(&self.stakes, sender)
+            if(oldCount >= amount ){
+                let newCount = oldCount - amount;
+                // ?? update newCount to table
+
+                //transfer coin to sender ????
+                let coin = coin::take(&mut self.pool, amount, ctx);
+                transfer::transfer(coin, sender);
             };
         } ;
     }
 
     //fixed
-    public(friend) fun claim(receied: address, ctx: &mut TxContext) {
-        transfer::transfer(sui, sender);
+    public(friend) fun claim(receied: address, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+        let sender = tx_context::sender(ctx);
+        if (table::contains(&self.stakes, sender)) {
+            let oldCount = table::borrow(&self.stakes, sender)
+            if(oldCount > 0 ){
+                let profits = oldCount * 0.1; //10%
+                coin::mint_and_transfer(treasury_cap, profits, receied, ctx)
+            };
+        } ;
     }
 
 
