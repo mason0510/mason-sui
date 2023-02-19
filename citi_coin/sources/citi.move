@@ -10,6 +10,8 @@ module citi_coin::CITI {
     use sui::table::Table;
     use sui::table;
     use sui::object;
+    use citi_coin::private_balance::join;
+    use sui::balance;
 
     struct CITI has drop{
     }
@@ -60,22 +62,24 @@ module citi_coin::CITI {
         coin::burn(treasury_cap, coin);
     }
 
-    public(friend) fun stake(self: &mut Stake, ctx: &mut TxContext) {
+    public entry fun stake(self: &mut Stake, ctx: &mut TxContext) {
         // transfer citi to stake pool
         // let amount  = coin::balance<CITI>(citi);
         let sender = tx_context::sender(ctx);
         // let oldCount = table::borrow(&self.stakes, sender);
+        let mytable = &mut self.stakes;
         if (!table::contains(&self.stakes, sender)) {
             //amount to stake
             table::add(&mut self.stakes, sender, 1000);
         } else {
             //  let newCount = oldCount + amount;
             // table::update(&mut self.stakes, sender, newCount);
-            table::add(&mut self.stakes, sender, 2000);
+            let oldCount = table::borrow_mut(&mut self.stakes, sender);
+            *oldCount = *oldCount + 1000;
         };
     }
 
-    public(friend) fun unstake(self: &Stake,treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+    public entry fun unstake(self: &Stake,treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
         let sender = tx_context::sender(ctx);
         if (table::contains(&self.stakes, sender)) {
             let oldCount = table::borrow(&self.stakes, sender);
@@ -94,9 +98,9 @@ module citi_coin::CITI {
     }
 
     //fixed
-    public(friend) fun claim(treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+    public entry fun claim(treasury_cap: &mut TreasuryCap<CITI>, received:address,ctx: &mut TxContext) {
         //Get sender address
-        let sender = tx_context::sender(ctx);
+        // let sender = tx_context::sender(ctx);
         //Get coin and transfer to sender
         // coin::mint_and_transfer(treasury_cap, 10000, sender, ctx)
         // if (table::contains(&self.stakes, sender)) {
@@ -106,7 +110,7 @@ module citi_coin::CITI {
         //         coin::mint_and_transfer(treasury_cap, profits, receied, ctx)
         //     };
         // } ;
-        coin::mint_and_transfer(treasury_cap, 10000, sender, ctx)
+        coin::mint_and_transfer(treasury_cap, 10000, received, ctx)
     }
 
     public fun supply_value<CITI>(): u64 {

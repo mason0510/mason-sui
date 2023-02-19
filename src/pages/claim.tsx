@@ -1,21 +1,24 @@
 import { useWallet } from "@suiet/wallet-kit";
 import React, { useEffect, useState } from "react";
-import { SUI_PACKAGE, SUI_MODULE, NETWORK } from "../config/constants";
+import {SUI_PACKAGE, SUI_MODULE,TreasureAddress, NETWORK, TABLE_NAME,OwnerAddress2} from "../config/constants";
 import { JsonRpcProvider } from '@mysten/sui.js';
-
-
-
 export default function Contract() {
-
     const provider = new JsonRpcProvider();
 
     const [magic, updateMagic] = useState('');
     const [strength, updateStrength] = useState('');
     const { signAndExecuteTransaction } = useWallet();
-    const [recipient, updateRecipient] = useState("");
+    const [received, updateRecipient] = useState("");
     const [tx, setTx] = useState('')
+    const [message, setMessage] = useState('');
 
     function makeTranscaction() {
+        let treasury_cap = TreasureAddress;
+        let received = "0x4e4fdd76615bffff6d44aac333e771c4865bdae7";
+        console.log('treasury_cap', treasury_cap);
+        console.log('received', received);
+        console.log('SUI_PACKAGE', SUI_PACKAGE);
+        console.log('SUI_MODULE', SUI_MODULE);
         return {
             packageObjectId: SUI_PACKAGE,
             module: SUI_MODULE,
@@ -23,15 +26,15 @@ export default function Contract() {
             typeArguments: [],
             // 类型错误，传递字符串类型，部分钱包会内部转化
             arguments: [
-                magic,
-                strength,
-                recipient,
+                treasury_cap,
+                received,
             ],
             gasBudget: 30000,
         };
     }
 
     const claimCiti = async () => {
+        setMessage("");
         try {
             const data = makeTranscaction();
             const resData = await signAndExecuteTransaction({
@@ -41,9 +44,14 @@ export default function Contract() {
                 }
             });
             console.log('success', resData);
+            setMessage('Claim succeeded');
+            alert('unStake success---'+resData.certificate.transactionDigest);
+            //打印显示成功的交易
             setTx('https://explorer.sui.io/transaction/' + resData.certificate.transactionDigest)
+            console.log('success2', resData);
         } catch (e) {
             console.error('failed', e);
+            setMessage('Claim failed: ' + e);
             setTx('');
         }
     }
@@ -62,7 +70,15 @@ export default function Contract() {
             <div className="card lg:card-side bg-base-100 shadow-xl mt-5">
                 <div className="card-body">
                     <h2 className="card-title">Withdrawal Interest </h2>
-                    <p><b>当前利息:100万</b></p>
+                    <p><b>当前利息:1000</b></p>
+                    <input
+                        placeholder="Recipient Address 默认当前地址"
+                        className="mt-8 p-4 input input-bordered input-primary w-full"
+                        value={received}
+                        onChange={(e) =>
+                            updateRecipient(e.target.value)
+                        }
+                    />
                     <div className="card-actions justify-end">
                         <button
                             onClick={claimCiti}

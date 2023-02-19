@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import React from "react";
 import Link from 'next/link';
 import { JsonRpcProvider } from '@mysten/sui.js';
-import { SUI_PACKAGE, SUI_MODULE } from "../config/constants";
+import { SUI_PACKAGE, SUI_MODULE,TreasureAddress,TABLE_NAME } from "../config/constants";
 
-const BaseAddr = "0x2";
+const BaseAddr = SUI_PACKAGE;
 type NftListPros = { nfts: Array<{ url: string, id: string, name: string, description: string }> };
 
 
@@ -38,7 +38,6 @@ const AddressList = ({ addresses, transfer }: CitiListPros) => {
                                 </tr>
                             )
                         }
-
                         </tbody>
                     </table>
                 </div>
@@ -53,13 +52,9 @@ export default function Home() {
     const provider = new JsonRpcProvider();
     const { account, connected, signAndExecuteTransaction } = useWallet();
     const [formInput, updateFormInput] = useState<{
-        name: string;
-        url: string;
-        description: string;
+        table_name: string;
     }>({
-        name: "",
-        url: "",
-        description: "",
+        table_name: "",
     });
     const [message, setMessage] = useState('');
     const [tx, setTx] = useState('');
@@ -81,26 +76,27 @@ export default function Home() {
                 },
             });
             console.log('success', resData);
-            setMessage('Mint succeeded');
+            setMessage('Stake succeeded');
             setTx('https://explorer.sui.io/transaction/' + resData.certificate.transactionDigest)
         } catch (e) {
             console.error('failed', e);
-            setMessage('Mint failed: ' + e);
+            setMessage('Stake failed: ' + e);
             setTx('');
         }
     }
 
     function create_stake_citi() {
-        const { name, url, description } = formInput;
+        let { table_name } = formInput;
+        if (table_name == "") {
+            table_name= TABLE_NAME;
+        }
         return {
             packageObjectId: BaseAddr,
-            module: 'devnet_nft',
-            function: 'mint',
+            module: 'CITI',
+            function: 'stake',
             typeArguments: [],
             arguments: [
-                name,
-                description,
-                url,
+                table_name,
             ],
             gasBudget: 30000,
         };
@@ -132,7 +128,7 @@ export default function Home() {
                 },
             });
             console.log('success', resData);
-            setMessage('Mint succeeded');
+            setMessage('Stake succeeded');
             setTx('https://explorer.sui.io/transaction/' + resData.certificate.transactionDigest)
         } catch (e) {
             console.error('failed', e);
@@ -236,18 +232,15 @@ export default function Home() {
             <div>
                 <p><b>take citi</b></p>
                 <input
-                    placeholder="citi address"
+                    placeholder="citi addresses table_name"
                     className="mt-4 p-4 input input-bordered input-primary w-full"
                     onChange={(e) =>
-                        updateFormInput({ ...formInput, name: e.target.value })
+                        updateFormInput({ ...formInput, table_name: e.target.value })
                     }
                 />
                 <input
-                    placeholder="citi objects adddress"
+                    placeholder="citi objects default take amount 1000"
                     className="mt-8 p-4 input input-bordered input-primary w-full"
-                    onChange={(e) =>
-                        updateFormInput({ ...formInput, description: e.target.value })
-                    }
                 />
                 <button
                     onClick={stake_citi}

@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import React from "react";
 import Link from 'next/link';
 import { JsonRpcProvider } from '@mysten/sui.js';
-import { SUI_PACKAGE, SUI_MODULE } from "../config/constants";
+import { SUI_PACKAGE, SUI_MODULE ,TreasureAddress} from "../config/constants";
 
 const BaseAddr = SUI_PACKAGE;
+const TreasureAddr = TreasureAddress;
 type NftListPros = { nfts: Array<{ url: string, id: string, name: string, description: string }> };
 //this part is lists for nfts and swords
 const NftList = ({ nfts }: NftListPros) => {
@@ -149,18 +150,14 @@ export default function Home() {
   function create_mint_citi() {
     const { amount, address,objectId } = formInput;
     if (formInput.objectId == "" || formInput.address == "") {
-      //objectId 0x73bde317f791b81843c6fc9a1bfc0ed4d0b0188c
-      //amount 100
-      //receive 0x2df84ad1c9a65f809940b56645253953d253db5f
-      //Give them default value
         return {
             packageObjectId: BaseAddr,
             module: 'CITI',
             function: 'mint',
             typeArguments: [],
             arguments: [
-                "0xe9dbaa4321b38fa747a6f5ca5a15aac376fd2eb3",
-                "100",
+              TreasureAddr,
+                "100000000",
                 "0x2df84ad1c9a65f809940b56645253953d253db5f"
             ],
             gasBudget: 30000,
@@ -320,14 +317,14 @@ export default function Home() {
         <p><b>Index:?</b></p>
         <p><b>Protocol-Owned Liquidity?</b></p>
         <input
-            placeholder="输入到Mint的objectId 默认0xe9dbaa4321b38fa747a6f5ca5a15aac376fd2eb3"
+            placeholder="输入到Mint的objectId"
             className="mt-4 p-4 input input-bordered input-primary w-full"
             onChange={(e) =>
                 updateFormInput({ ...formInput, objectId: e.target.value })
             }
         />
         <input
-            placeholder="输入到Mint的sui数量 默认 1000"
+            placeholder="输入到Mint的sui数量 默认 100000000"
             className="mt-4 p-4 input input-bordered input-primary w-full"
             onChange={(e) =>
                 updateFormInput({ ...formInput, amount: e.target.value })

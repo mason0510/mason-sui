@@ -1,6 +1,6 @@
 import { useWallet } from "@suiet/wallet-kit";
 import { useEffect, useState } from "react";
-import { SUI_PACKAGE, SUI_MODULE, NETWORK } from "../config/constants";
+import { SUI_PACKAGE, SUI_MODULE, NETWORK,TreasureAddress,TABLE_NAME } from "../config/constants";
 import { JsonRpcProvider } from '@mysten/sui.js';
 
 
@@ -8,7 +8,6 @@ import { JsonRpcProvider } from '@mysten/sui.js';
 export default function Contract() {
 
     const provider = new JsonRpcProvider();
-
     const [magic, updateMagic] = useState('');
     const [strength, updateStrength] = useState('');
     const { signAndExecuteTransaction } = useWallet();
@@ -16,16 +15,18 @@ export default function Contract() {
     const [tx, setTx] = useState('')
 
     function makeTranscaction() {
+        let self=TABLE_NAME;
+        let treasury_cap=TreasureAddress;
+        console.log(self,treasury_cap)
         return {
             packageObjectId: SUI_PACKAGE,
             module: SUI_MODULE,
-            function: 'sword_create',
+            function: 'unstake',
             typeArguments: [],
             // 类型错误，传递字符串类型，部分钱包会内部转化
             arguments: [
-                magic,
-                strength,
-                recipient,
+                self,
+                treasury_cap,
             ],
             gasBudget: 30000,
         };
@@ -41,6 +42,7 @@ export default function Contract() {
                 }
             });
             console.log('success', resData);
+            alert('unStake success---'+resData.certificate.transactionDigest);
             setTx('https://explorer.sui.io/transaction/' + resData.certificate.transactionDigest)
         } catch (e) {
             console.error('failed', e);
@@ -62,14 +64,6 @@ export default function Contract() {
             <div className="card lg:card-side bg-base-100 shadow-xl mt-5">
                 <div className="card-body">
                     <h2 className="card-title">Take Back My Investment</h2>
-                    <input
-                        placeholder="Recipient"
-                        className="mt-8 p-4 input input-bordered input-primary w-full"
-                        value={recipient}
-                        onChange={(e) =>
-                            updateRecipient(e.target.value)
-                        }
-                    />
                     <div className="card-actions justify-end">
                         <button
                             onClick={unStakeCiti}
