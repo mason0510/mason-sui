@@ -24,6 +24,12 @@ module citi_coin::CITI{
     struct CITI has drop {
     }
 
+    struct Stake has key, store, drop {
+        id: UID,
+        pool:address,
+        stakes: Table<address, u64>,
+        start_epoch: u64,
+    }
 
     /// Register the CITIcurrency to acquire its `TreasuryCap`. Because
     /// this is a module initializer, it ensures the currency only gets
@@ -32,6 +38,17 @@ module citi_coin::CITI{
         // Get a treasury cap for the coin and give it to the transaction sender
         let (treasury_cap, metadata) = coin::create_currency<CITI>(witness, 1, b"CITI", b"citi", b"one new stable coin on sui blockchain", option::none(), ctx);
         transfer::freeze_object(metadata);
+
+        let epoch = tx_context::epoch(ctx);
+        transfer::share_object(
+            Stake {
+                id: object::new(ctx),
+                pool:address, //??
+                stakes: table::new(ctx),
+                start_epoch: epoch,
+            }
+        );
+
         transfer::transfer(treasury_cap, tx_context::sender(ctx))
     }
 
@@ -46,6 +63,42 @@ module citi_coin::CITI{
     /// Manager can burn coins
     public entry fun burn(treasury_cap: &mut TreasuryCap<CITI>, coin: Coin<CITI>) {
         coin::burn(treasury_cap, coin);
+    }
+
+
+    public(friend) fun stake(self: &Stake, sui: Coin<SUI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+        // transfer sui to stake pool
+        let amount = = coin::balance<SUI>(sui);
+        transfer::transfer(sui, self.pool);
+
+        let sender = tx_context::sender(ctx);
+        if (!table::contains(&self.stakes, sender)) {
+            table::add(&mut self.stakes, sender, amount);
+        } else {
+            let oldCount = table::borrow(&self.stakes, sender)
+            let newCount = oldCount + amount
+            // ?? update newCount to stake
+            ??
+        };
+
+        //transfer citi to sender
+        coin::mint_and_transfer(treasury_cap, amount, sender, ctx)
+
+    }
+
+    public(friend) fun unstake(self: &Stake,  citi: Coin<CITI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
+        //
+        let amount = = coin::balance<CITI>(citi);
+        let sender = tx_context::sender(ctx);
+        if (table::contains(&self.stakes, sender)) {
+            let stakedCount = table::borrow(&self.stakes, sender)
+            if(stakedCount >= amount ){
+                coin::burn(treasury_cap, citi);
+
+                //??
+                transfer::transfer(sui, sender);
+            };
+        } ;
     }
 
     //for test
