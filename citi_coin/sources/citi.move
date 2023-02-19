@@ -4,6 +4,7 @@ module citi_coin::CITI{
     use std::option;
     use sui::coin::{Self, Coin, TreasuryCap};
     use sui::transfer;
+    use sui::object::{Self, ID, UID};
     use sui::tx_context::{Self, TxContext};
     const ENonZero: u64 = 0;
     /// For when an overflow is happening on Supply operations.
@@ -40,14 +41,7 @@ module citi_coin::CITI{
         transfer::freeze_object(metadata);
 
         let epoch = tx_context::epoch(ctx);
-        transfer::share_object(
-            Stake {
-                id: object::new(ctx),
-                pool:address, //??
-                stakes: table::new(ctx),
-                start_epoch: epoch,
-            }
-        );
+
 
         transfer::transfer(treasury_cap, tx_context::sender(ctx))
     }
@@ -68,6 +62,16 @@ module citi_coin::CITI{
 
     public(friend) fun stake(self: &Stake, sui: Coin<SUI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
         // transfer sui to stake pool
+        //get value from struct
+        //before information get balance
+        // assert!(counter.owner == tx_context::sender(ctx), 0);
+        // counter.value = value;
+        //id_from_address
+        tx_context::sender(ctx);
+        Id::id_from_address(tx_context::sender(ctx));
+        // map address to id
+
+        //citi coin
         let amount = = coin::balance<SUI>(sui);
         transfer::transfer(sui, self.pool);
 
@@ -88,18 +92,22 @@ module citi_coin::CITI{
 
     public(friend) fun unstake(self: &Stake,  citi: Coin<CITI>, treasury_cap: &mut TreasuryCap<CITI>, ctx: &mut TxContext) {
         //
-        let amount = = coin::balance<CITI>(citi);
+        let amount  = coin::balance<CITI>(citi);
         let sender = tx_context::sender(ctx);
         if (table::contains(&self.stakes, sender)) {
             let stakedCount = table::borrow(&self.stakes, sender)
             if(stakedCount >= amount ){
                 coin::burn(treasury_cap, citi);
-
-                //??
                 transfer::transfer(sui, sender);
             };
         } ;
     }
+
+    //fixed
+    public(friend) fun claim(receied: address, ctx: &mut TxContext) {
+        transfer::transfer(sui, sender);
+    }
+
 
     //for test
     public fun supply_value<CITI>(): u64 {
@@ -110,6 +118,8 @@ module citi_coin::CITI{
 
     //闪电贷
     use sui::object::{Self, ID, UID};
+    use sui::table::Table;
+
     struct AdminCap has key, store {
         id: UID,
         flash_lender_id: ID,

@@ -5,11 +5,20 @@ An improved version of the Move ecology AS algorithm Stablecoin project
 [Demo Link](http://23.254.167.135:6001/)
 how to ensure investor's interests?
 1.sui区块链的合约基本安全性保证。Based on sui System ,ensure the stability and safety of the system
-2.代币的应用场景。Games is based on the stablecoin, the introduction of game theory for add more citi scene
+2.代币的应用场景。Games is based on the stablecoin, the introduction of game theory for add more citi scene.
+Eos top Rink games will be introduced , these games will be the games to use the citi stablecoin.
 3.Dao基金会控制协议。the introduction of the DAO system to ensure the interests of investors for winning more trust
 4.Game theory(博弈论)的引入。只有bond和stake的用户长期看才能获得最大的收益，避免市场过度抛售。
 ![SUI-As 博弈论的说明](https://p.ipic.vip/vnnf5f.png)
-5.当币价低于1美元时,市场处于极端情况将启动互助机制，(投资者的代币将会自动锁定和自动销毁机制，直到代币代币重新挂钩),确保不会出现luna式死亡螺旋。
+If both hodlers bond & stake = (3, 3), the total score would be 6 (HIGHEST)
+If one bonds & one stakes = (3, 1), the total score would be 4
+If one sells = (1, -1), the total score would be 0
+If both sell = (-3, -3), the total score would be -6 (LOWEST)
+With the matrix table overview, it is pretty clear that bonding and staking will be the best choice for all of our IMMO hodlers. 
+Theoretically, if everyone stakes and bonds, CITI will be able to deliver the best for holders and treasury assets.
+In CITI System, CITI can only be minted or burnt by the protocol and it also guarantees that each CITI is always backed by some amount of 1 mcUSD.
+
+5.当币价低于1美元时,市场处于极端情况将启动互助机制，(投资者的代币将会启动自动锁定或者紧急销毁机制，直到代币代币重新挂钩),确保不会出现luna式死亡螺旋。
 The unique hook mechanism can ensure that the stablecoin is not affected by the market and the price is stable
 
 risk？
