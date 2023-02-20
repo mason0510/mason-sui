@@ -3,5 +3,8 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/sui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/suiContractExamples/Web3-dApp-Camp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/suiContractExamples/mobius-sui" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/suiContractExamples/sui-stake-protocol" vcs="Git" />
   </component>
 </project>

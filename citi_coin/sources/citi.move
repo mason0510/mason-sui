@@ -10,9 +10,6 @@ module citi_coin::CITI {
     use sui::table::Table;
     use sui::table;
     use sui::object;
-    use citi_coin::private_balance::join;
-    use sui::balance;
-
     struct CITI has drop{
     }
 
