@@ -1,6 +1,4 @@
-# sui 前端开发脚手架
-
-一个 基于 next.js Tailwind 的 sui move 应用脚手架。
+# sui 
 
 ## 项目依赖版本
 node 16以上
