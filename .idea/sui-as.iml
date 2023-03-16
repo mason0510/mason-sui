@@ -46,6 +46,25 @@
       <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/games/build" />
       <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/basics/build" />
       <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/data_structure/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/x/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/docs/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/math/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/stake/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/test_coin/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/playground/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/protocol_test/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/mobius-sui/protocol_query/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/sui/sandwich/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/sui/sui-data-structure/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/sui/sui-move-test-tutorial/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/aptos/nft-with-attr/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/starcoin/my-token/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/starcoin/my-counter/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/starcoin/my-library/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/Web3-dApp-Camp/move-dapp/starcoin/eth-sig-verifier/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/sui-stake-protocol/move/x/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/sui-stake-protocol/move/math/build" />
+      <excludeFolder url="file://$MODULE_DIR$/suiContractExamples/sui-stake-protocol/move/stake/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

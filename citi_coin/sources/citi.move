@@ -110,6 +110,8 @@ module citi_coin::CITI {
         coin::mint_and_transfer(treasury_cap, 10000, received, ctx)
     }
 
+    //发行算法 start end
+
     public fun supply_value<CITI>(): u64 {
         100000000
     }
